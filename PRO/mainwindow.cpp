@@ -253,11 +253,28 @@ void MainWindow::protocol_bfsk()
     data[15] = (ui->lineEdit_bfsk_data->text().toUInt(NULL,16) & 0x000000FF) >> 0;
     data[16] = 0x5B;
     data[17] = 0xB5;
-    int singal_wide = 100 + ui->lineEdit_bfsk_sync_time_gap->text().toUInt() + ui->lineEdit_bfsk_symbol_wide->text().toUInt() * 32;
-    ui->spinBox_repeat->setMinimum(singal_wide + 100);
+
+    int symbol_number,tmp_data;
+    tmp_data = ui->lineEdit_bfsk_data->text().toUInt(NULL,16);
+    symbol_number = 0;
+    for (int i = 0;i < 8; i++) {
+        if(tmp_data & 0xF){
+            symbol_number ++;
+        }
+        tmp_data >>= 4;
+    }
+
+    singal_wide = 100 + ui->lineEdit_bfsk_sync_time_gap->text().toUInt() + ui->lineEdit_bfsk_symbol_wide->text().toUInt() * symbol_number * 4;
+    if(last_singal_wide != singal_wide){
+        last_singal_wide = singal_wide;
+        ui->spinBox_repeat->setMinimum(last_singal_wide + 100);
+        ui->spinBox_repeat->setValue(last_singal_wide + 200);
+    }
+
     if(singal_wide > ui->spinBox_repeat->value()){
         ui->spinBox_repeat->setValue(singal_wide + 200);
     }
+//    qDebug() << symbol_number << singal_wide;
     qDebug() << "BFSK";
 
     serial->write(data,18);
@@ -298,8 +315,23 @@ void MainWindow::protocol_qfsk()
 
     qDebug() << "QFSK";
 
-    int singal_wide = 100 + ui->lineEdit_bfsk_sync_time_gap->text().toUInt() + ui->lineEdit_bfsk_symbol_wide->text().toUInt() * 16;
-    ui->spinBox_repeat->setMinimum(singal_wide + 100);
+    int symbol_number,tmp_data;
+    tmp_data = ui->lineEdit_qfsk_data->text().toUInt(NULL,16);
+    symbol_number = 0;
+    for (int i = 0;i < 8; i++) {
+        if(tmp_data & 0xF){
+            symbol_number ++;
+        }
+        tmp_data >>= 4;
+    }
+
+    singal_wide = 100 + ui->lineEdit_bfsk_sync_time_gap->text().toUInt() + ui->lineEdit_bfsk_symbol_wide->text().toUInt() * symbol_number * 2;
+    if(last_singal_wide != singal_wide){
+        last_singal_wide = singal_wide;
+        ui->spinBox_repeat->setMinimum(last_singal_wide + 100);
+        ui->spinBox_repeat->setValue(last_singal_wide + 200);
+    }
+
     if(singal_wide > ui->spinBox_repeat->value()){
         ui->spinBox_repeat->setValue(singal_wide + 200);
     }

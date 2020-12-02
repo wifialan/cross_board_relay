@@ -78,6 +78,8 @@ private:
     QTimer *repeatSendTimer;
 
     bool repeatSend;
+    quint16 last_singal_wide;
+    quint16 singal_wide;
 
 private:
     Ui::MainWindow *ui;
