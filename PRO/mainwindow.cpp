@@ -237,28 +237,27 @@ void MainWindow::protocol_bfsk()
     char data[18]={0};
     data[0] = 0xA5;
     data[1] = 0x5A;
-    data[2] = (ui->lineEdit_bfsk_sync_freq->text().toInt() & 0xFF00) >> 8;
-    data[3] = (ui->lineEdit_bfsk_sync_freq->text().toInt() & 0x00FF) >> 0;
-    data[4] = (ui->lineEdit_bfsk_sync_time_gap->text().toInt() & 0xFF00) >> 8;
-    data[5] = (ui->lineEdit_bfsk_sync_time_gap->text().toInt() & 0x00FF) >> 0;
-    data[6] = (ui->lineEdit_bfsk_freq_1->text().toInt() & 0xFF00) >> 8;
-    data[7] = (ui->lineEdit_bfsk_freq_1->text().toInt() & 0x00FF) >> 0;
-    data[8] = (ui->lineEdit_bfsk_freq_2->text().toInt() & 0xFF00) >> 8;
-    data[9] = (ui->lineEdit_bfsk_freq_2->text().toInt() & 0x00FF) >> 0;
-    data[10] = (ui->lineEdit_bfsk_symbol_wide->text().toInt() & 0xFF00) >> 8;
-    data[11] = (ui->lineEdit_bfsk_symbol_wide->text().toInt() & 0x00FF) >> 0;
-    data[12] = (ui->lineEdit_bfsk_data->text().toInt(NULL,16) & 0xFF000000) >> 24;
-    data[13] = (ui->lineEdit_bfsk_data->text().toInt(NULL,16) & 0x00FF0000) >> 16;
-    data[14] = (ui->lineEdit_bfsk_data->text().toInt(NULL,16) & 0x0000FF00) >> 8;
-    data[15] = (ui->lineEdit_bfsk_data->text().toInt(NULL,16) & 0xFF0000FF) >> 0;
+    data[2] = (ui->lineEdit_bfsk_sync_freq->text().toUInt() & 0xFF00) >> 8;
+    data[3] = (ui->lineEdit_bfsk_sync_freq->text().toUInt() & 0x00FF) >> 0;
+    data[4] = (ui->lineEdit_bfsk_sync_time_gap->text().toUInt() & 0xFF00) >> 8;
+    data[5] = (ui->lineEdit_bfsk_sync_time_gap->text().toUInt() & 0x00FF) >> 0;
+    data[6] = (ui->lineEdit_bfsk_freq_1->text().toUInt() & 0xFF00) >> 8;
+    data[7] = (ui->lineEdit_bfsk_freq_1->text().toUInt() & 0x00FF) >> 0;
+    data[8] = (ui->lineEdit_bfsk_freq_2->text().toUInt() & 0xFF00) >> 8;
+    data[9] = (ui->lineEdit_bfsk_freq_2->text().toUInt() & 0x00FF) >> 0;
+    data[10] = (ui->lineEdit_bfsk_symbol_wide->text().toUInt() & 0xFF00) >> 8;
+    data[11] = (ui->lineEdit_bfsk_symbol_wide->text().toUInt() & 0x00FF) >> 0;
+    data[12] = (ui->lineEdit_bfsk_data->text().toUInt(NULL,16) & 0xFF000000) >> 24;
+    data[13] = (ui->lineEdit_bfsk_data->text().toUInt(NULL,16) & 0x00FF0000) >> 16;
+    data[14] = (ui->lineEdit_bfsk_data->text().toUInt(NULL,16) & 0x0000FF00) >> 8;
+    data[15] = (ui->lineEdit_bfsk_data->text().toUInt(NULL,16) & 0x000000FF) >> 0;
     data[16] = 0x5B;
     data[17] = 0xB5;
-    int singal_wide = 100 + ui->lineEdit_bfsk_sync_time_gap->text().toInt() + ui->lineEdit_bfsk_symbol_wide->text().toInt() * 32;
+    int singal_wide = 100 + ui->lineEdit_bfsk_sync_time_gap->text().toUInt() + ui->lineEdit_bfsk_symbol_wide->text().toUInt() * 32;
     ui->spinBox_repeat->setMinimum(singal_wide + 100);
     if(singal_wide > ui->spinBox_repeat->value()){
         ui->spinBox_repeat->setValue(singal_wide + 200);
     }
-
     qDebug() << "BFSK";
 
     serial->write(data,18);
@@ -276,30 +275,30 @@ void MainWindow::protocol_qfsk()
     char data[22]={0};
     data[0] = 0xA5;
     data[1] = 0x5A;
-    data[2] = (ui->lineEdit_qfsk_sync_freq->text().toInt() & 0xFF00) >> 8;
-    data[3] = (ui->lineEdit_qfsk_sync_freq->text().toInt() & 0x00FF) >> 0;
-    data[4] = (ui->lineEdit_qfsk_sync_time_gap->text().toInt() & 0xFF00) >> 8;
-    data[5] = (ui->lineEdit_qfsk_sync_time_gap->text().toInt() & 0x00FF) >> 0;
-    data[6] = (ui->lineEdit_qfsk_freq_1->text().toInt() & 0xFF00) >> 8;
-    data[7] = (ui->lineEdit_qfsk_freq_1->text().toInt() & 0x00FF) >> 0;
-    data[8] = (ui->lineEdit_qfsk_freq_2->text().toInt() & 0xFF00) >> 8;
-    data[9] = (ui->lineEdit_qfsk_freq_2->text().toInt() & 0x00FF) >> 0;
-    data[10] = (ui->lineEdit_qfsk_freq_3->text().toInt() & 0xFF00) >> 8;
-    data[11] = (ui->lineEdit_qfsk_freq_3->text().toInt() & 0x00FF) >> 0;
-    data[12] = (ui->lineEdit_qfsk_freq_4->text().toInt() & 0xFF00) >> 8;
-    data[13] = (ui->lineEdit_qfsk_freq_4->text().toInt() & 0x00FF) >> 0;
-    data[14] = (ui->lineEdit_qfsk_symbol_wide->text().toInt() & 0xFF00) >> 8;
-    data[15] = (ui->lineEdit_qfsk_symbol_wide->text().toInt() & 0x00FF) >> 0;
-    data[16] = (ui->lineEdit_qfsk_data->text().toInt(NULL,16) & 0xFF000000) >> 24;
-    data[17] = (ui->lineEdit_qfsk_data->text().toInt(NULL,16) & 0x00FF0000) >> 16;
-    data[18] = (ui->lineEdit_qfsk_data->text().toInt(NULL,16) & 0x0000FF00) >> 8;
-    data[19] = (ui->lineEdit_qfsk_data->text().toInt(NULL,16) & 0xFF0000FF) >> 0;
+    data[2] = (ui->lineEdit_qfsk_sync_freq->text().toUInt() & 0xFF00) >> 8;
+    data[3] = (ui->lineEdit_qfsk_sync_freq->text().toUInt() & 0x00FF) >> 0;
+    data[4] = (ui->lineEdit_qfsk_sync_time_gap->text().toUInt() & 0xFF00) >> 8;
+    data[5] = (ui->lineEdit_qfsk_sync_time_gap->text().toUInt() & 0x00FF) >> 0;
+    data[6] = (ui->lineEdit_qfsk_freq_1->text().toUInt() & 0xFF00) >> 8;
+    data[7] = (ui->lineEdit_qfsk_freq_1->text().toUInt() & 0x00FF) >> 0;
+    data[8] = (ui->lineEdit_qfsk_freq_2->text().toUInt() & 0xFF00) >> 8;
+    data[9] = (ui->lineEdit_qfsk_freq_2->text().toUInt() & 0x00FF) >> 0;
+    data[10] = (ui->lineEdit_qfsk_freq_3->text().toUInt() & 0xFF00) >> 8;
+    data[11] = (ui->lineEdit_qfsk_freq_3->text().toUInt() & 0x00FF) >> 0;
+    data[12] = (ui->lineEdit_qfsk_freq_4->text().toUInt() & 0xFF00) >> 8;
+    data[13] = (ui->lineEdit_qfsk_freq_4->text().toUInt() & 0x00FF) >> 0;
+    data[14] = (ui->lineEdit_qfsk_symbol_wide->text().toUInt() & 0xFF00) >> 8;
+    data[15] = (ui->lineEdit_qfsk_symbol_wide->text().toUInt() & 0x00FF) >> 0;
+    data[16] = (ui->lineEdit_qfsk_data->text().toUInt(NULL,16) & 0xFF000000) >> 24;
+    data[17] = (ui->lineEdit_qfsk_data->text().toUInt(NULL,16) & 0x00FF0000) >> 16;
+    data[18] = (ui->lineEdit_qfsk_data->text().toUInt(NULL,16) & 0x0000FF00) >> 8;
+    data[19] = (ui->lineEdit_qfsk_data->text().toUInt(NULL,16) & 0xFF0000FF) >> 0;
     data[20] = 0x5B;
     data[21] = 0xB5;
 
     qDebug() << "QFSK";
 
-    int singal_wide = 100 + ui->lineEdit_bfsk_sync_time_gap->text().toInt() + ui->lineEdit_bfsk_symbol_wide->text().toInt() * 16;
+    int singal_wide = 100 + ui->lineEdit_bfsk_sync_time_gap->text().toUInt() + ui->lineEdit_bfsk_symbol_wide->text().toUInt() * 16;
     ui->spinBox_repeat->setMinimum(singal_wide + 100);
     if(singal_wide > ui->spinBox_repeat->value()){
         ui->spinBox_repeat->setValue(singal_wide + 200);
@@ -365,7 +364,7 @@ void MainWindow::on_checkBox_repeat_clicked(bool checked)
 {
     repeatSend = checked;
     if( repeatSend == true ) {
-        repeatSendTimer->start( ui->spinBox_repeat->text().toInt()  );
+        repeatSendTimer->start( ui->spinBox_repeat->text().toUInt()  );
     }else{
         repeatSendTimer->stop();
     }
