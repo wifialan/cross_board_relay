@@ -7,6 +7,8 @@
 #include <QMessageBox>
 #include <QSerialPortInfo>
 #include <QTimer>
+#include <QRegExp>
+#include <QDateTime>
 
 
 #define                     CONFIG_BAUDRATE_1200_INDEX             0
@@ -65,12 +67,14 @@ private slots:
 
     void SoftAutoWriteUart();
 
+    void on_time_update(); //时间更新槽函数，状态栏显示时间
+
 private:
     void RefreshTheUSBList( void );
     void protocol_bfsk();
     void protocol_qfsk();
 
-
+    char crc8_maxim(uint8_t *ptr,uint8_t len);
 
 private:
     QSerialPort *serial;
@@ -80,6 +84,8 @@ private:
     bool repeatSend;
     quint16 last_singal_wide;
     quint16 singal_wide;
+
+    QLabel *currentTimeLabel;
 
 private:
     Ui::MainWindow *ui;

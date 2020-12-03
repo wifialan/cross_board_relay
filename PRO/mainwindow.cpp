@@ -13,6 +13,30 @@ MainWindow::MainWindow(QWidget *parent)
     ui->lineEdit_data_tail_bfsk->setEnabled(false);
     ui->lineEdit_data_header_qfsk->setEnabled(false);
     ui->lineEdit_data_tail_qfsk->setEnabled(false);
+    ui->lineEdit_bfsk_data_crc->setEnabled(false);
+    ui->lineEdit_qfsk_data_crc->setEnabled(false);
+
+    currentTimeLabel = new QLabel; // 创建QLabel控件
+    ui->statusbar->addWidget(currentTimeLabel); //在状态栏添加此控件
+    on_time_update();
+    QTimer *timer = new QTimer(this);
+    timer->start(500); //每隔300ms发送timeout的信号
+    connect(timer, SIGNAL(timeout()),this,SLOT(on_time_update()));
+
+    //    ui->statusbar->setGeometry()
+
+    //    C++ 正则表达式书写规则如下：
+    //    [0-9]//可以输入0到 9这几个数字
+    //    [A-Za-z]//输入任意英文的常规写法
+    //    [^]//有^标记时，方框内不能输入，例如[^abc]就不能输入"a","b","c"。
+    //    {}/*跟在[]后，表示正则限制，例如[0-9]{4}，则只能输入4位数字，[0-9]{2,9}，
+    //    则能输入2位到9位数字，如果你想输入一个可以转换成double的数字，可以表示为*/
+    //    [0-9]{1,}[.]{1}[0-9]{1,}//其中，类似{1,}的表达表示大于1位数，不设上限。
+
+    QRegExp regx("[A-Fa-f0-9]{6}");
+    QValidator *validator = new QRegExpValidator(regx, ui->lineEdit_bfsk_data);
+    ui->lineEdit_bfsk_data->setValidator(validator);
+    ui->lineEdit_qfsk_data->setValidator(validator);
 
     ui->pushButton_close->setEnabled(false);
     ui->pushButton_open->setEnabled(true);
@@ -34,8 +58,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect( repeatSendTimer, SIGNAL(timeout()), this, SLOT(SoftAutoWriteUart()) );
     connect(serial,SIGNAL(readyRead()),this,SLOT( serialRcvData() ) );
 
-
-
 }
 
 MainWindow::~MainWindow()
@@ -44,6 +66,13 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::on_time_update()
+{
+    //[1] 获取时间
+    QDateTime current_time = QDateTime::currentDateTime();
+    QString timestr = current_time.toString( "yyyy年MM月dd日 hh:mm:ss"); //设置显示的格式
+    currentTimeLabel->setText(timestr); //设置label的文本内容为时间
+}
 
 void MainWindow::on_pushButton_open_clicked()
 {
@@ -234,6 +263,7 @@ void MainWindow::protocol_bfsk()
      * 0xA5 0x5A 0x03 0x44 0x00 0x10 0x01 0x52 0x02 0x55 0x05 0x33 0x01 0x02 0x03 0x04 0x5B 0xB5
      *
      * */
+    uint32_t bfsk_data;
     char data[18]={0};
     data[0] = 0xA5;
     data[1] = 0x5A;
@@ -247,13 +277,36 @@ void MainWindow::protocol_bfsk()
     data[9] = (ui->lineEdit_bfsk_freq_2->text().toUInt() & 0x00FF) >> 0;
     data[10] = (ui->lineEdit_bfsk_symbol_wide->text().toUInt() & 0xFF00) >> 8;
     data[11] = (ui->lineEdit_bfsk_symbol_wide->text().toUInt() & 0x00FF) >> 0;
-    data[12] = (ui->lineEdit_bfsk_data->text().toUInt(NULL,16) & 0xFF000000) >> 24;
-    data[13] = (ui->lineEdit_bfsk_data->text().toUInt(NULL,16) & 0x00FF0000) >> 16;
-    data[14] = (ui->lineEdit_bfsk_data->text().toUInt(NULL,16) & 0x0000FF00) >> 8;
-    data[15] = (ui->lineEdit_bfsk_data->text().toUInt(NULL,16) & 0x000000FF) >> 0;
+    bfsk_data = ui->lineEdit_bfsk_data->text().toUInt(NULL,16) << 8;
+    data[12] = (bfsk_data & 0xFF000000) >> 24;
+    data[13] = (bfsk_data & 0x00FF0000) >> 16;
+    data[14] = (bfsk_data & 0x0000FF00) >> 8;
+    data[15] = (bfsk_data & 0x00000000) >> 0;
     data[16] = 0x5B;
     data[17] = 0xB5;
 
+    uint8_t crc_data[3]={(uint8_t)data[12],(uint8_t)data[13],(uint8_t)data[14]};
+    data[15] = crc8_maxim(crc_data,3);
+
+    ui->lineEdit_bfsk_data_crc->setText(QString::number(data[15],16).toUpper());
+
+    qDebug() << bfsk_data;
+    QString  str = "BFSK: ";
+    QString  str_tmp;
+
+    for (int i = 0;i < 18;i ++) {
+        str_tmp = QString::number((uint8_t)data[i],16).toUpper();
+        if(str_tmp == '0'){
+            str_tmp = "00";
+        }
+        str.append(str_tmp);
+        str.append(' ');
+    }
+    ui->textBrowser->append(str);
+
+    //    for (int i=0;i<18;i++) {
+    //        qDebug("%d %d ",i,data[i]);
+    //    }
     int symbol_number,tmp_data;
     tmp_data = ui->lineEdit_bfsk_data->text().toUInt(NULL,16);
     symbol_number = 0;
@@ -274,7 +327,7 @@ void MainWindow::protocol_bfsk()
     if(singal_wide > ui->spinBox_repeat->value()){
         ui->spinBox_repeat->setValue(singal_wide + 200);
     }
-//    qDebug() << symbol_number << singal_wide;
+    //    qDebug() << symbol_number << singal_wide;
     qDebug() << "BFSK";
 
     serial->write(data,18);
@@ -289,6 +342,7 @@ void MainWindow::protocol_qfsk()
      * 0xA5 0x5A 0x03 0x44 0x00 0x10 0x01 0x52 0x02 0x55 0x05 0x33 0x01 0x02 0x03 0x04 0x5B 0xB5
      *
      * */
+    uint32_t qfsk_data;
     char data[22]={0};
     data[0] = 0xA5;
     data[1] = 0x5A;
@@ -306,14 +360,37 @@ void MainWindow::protocol_qfsk()
     data[13] = (ui->lineEdit_qfsk_freq_4->text().toUInt() & 0x00FF) >> 0;
     data[14] = (ui->lineEdit_qfsk_symbol_wide->text().toUInt() & 0xFF00) >> 8;
     data[15] = (ui->lineEdit_qfsk_symbol_wide->text().toUInt() & 0x00FF) >> 0;
-    data[16] = (ui->lineEdit_qfsk_data->text().toUInt(NULL,16) & 0xFF000000) >> 24;
-    data[17] = (ui->lineEdit_qfsk_data->text().toUInt(NULL,16) & 0x00FF0000) >> 16;
-    data[18] = (ui->lineEdit_qfsk_data->text().toUInt(NULL,16) & 0x0000FF00) >> 8;
-    data[19] = (ui->lineEdit_qfsk_data->text().toUInt(NULL,16) & 0xFF0000FF) >> 0;
+    qfsk_data = ui->lineEdit_qfsk_data->text().toUInt(NULL,16) << 8;
+    data[16] = (qfsk_data & 0xFF000000) >> 24;
+    data[17] = (qfsk_data & 0x00FF0000) >> 16;
+    data[18] = (qfsk_data & 0x0000FF00) >> 8;
+    data[19] = (qfsk_data & 0xFF000000) >> 0; //清零
     data[20] = 0x5B;
     data[21] = 0xB5;
 
     qDebug() << "QFSK";
+
+    uint8_t crc_data[3]={(uint8_t)data[16],(uint8_t)data[17],(uint8_t)data[18]};
+    data[19] = crc8_maxim(crc_data,3);
+
+    ui->lineEdit_qfsk_data_crc->setText(QString::number(data[19],16).toUpper());
+
+    //    for (int i=0;i<18;i++) {
+    //        qDebug("%d %d ",i,data[i]);
+    //    }
+
+    QString  str = "QFSK: ";
+    QString  str_tmp;
+
+    for (int i = 0;i < 22;i ++) {
+        str_tmp = QString::number((uint8_t)data[i],16).toUpper();
+        if(str_tmp == '0'){
+            str_tmp = "00";
+        }
+        str.append(str_tmp);
+        str.append(' ');
+    }
+    ui->textBrowser->append(str);
 
     int symbol_number,tmp_data;
     tmp_data = ui->lineEdit_qfsk_data->text().toUInt(NULL,16);
@@ -337,6 +414,32 @@ void MainWindow::protocol_qfsk()
     }
 
     serial->write(data,22);
+}
+
+char MainWindow::crc8_maxim(uint8_t *ptr, uint8_t len)
+{
+    int i=0;
+    uint8_t crc=0x00;
+    uint8_t pDataBuf=0;
+    while(len--)
+    {
+        if(*ptr == 0){
+            ptr++;
+            continue;
+        }
+        pDataBuf=*ptr++;
+        for(i=0;i<8;i++){
+            if((crc^(pDataBuf))&0x01){
+                crc^=0x18;
+                crc>>=1;
+                crc|=0x80;
+            } else {
+                crc>>=1;
+            }
+            pDataBuf>>=1;
+        }
+    }
+    return crc;
 }
 
 void MainWindow::on_pushButton_scan_clicked()
@@ -369,7 +472,7 @@ void MainWindow::on_pushButton_close_clicked()
     ui->pushButton_send->setEnabled(false);
     ui->pushButton_scan->setEnabled(true);
     ui->comboBox_serialPort->setEnabled(true);
-    ui->statusbar->showMessage("No Port is Connected!");
+    //    ui->statusbar->showMessage("No Port is Connected!");
     ui->checkBox_repeat->setChecked(false);
     ui->checkBox_repeat->setDisabled(true);
     repeatSendTimer->stop();

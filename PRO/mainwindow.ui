@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1190</width>
-    <height>250</height>
+    <height>260</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -19,7 +19,7 @@
   <property name="maximumSize">
    <size>
     <width>1190</width>
-    <height>250</height>
+    <height>3000</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -308,9 +308,9 @@
     <property name="geometry">
      <rect>
       <x>360</x>
-      <y>20</y>
+      <y>17</y>
       <width>803</width>
-      <height>93</height>
+      <height>101</height>
      </rect>
     </property>
     <property name="currentIndex">
@@ -320,56 +320,6 @@
      <attribute name="title">
       <string>BFSK</string>
      </attribute>
-     <widget class="QWidget" name="layoutWidget">
-      <property name="geometry">
-       <rect>
-        <x>576</x>
-        <y>37</y>
-        <width>95</width>
-        <height>25</height>
-       </rect>
-      </property>
-      <layout class="QGridLayout" name="gridLayout_23">
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_21">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>21</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>21</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>0x</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QLineEdit" name="lineEdit_bfsk_data">
-         <property name="minimumSize">
-          <size>
-           <width>71</width>
-           <height>23</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>71</width>
-           <height>23</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>1234ABCD</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
      <widget class="QLabel" name="label_27">
       <property name="geometry">
        <rect>
@@ -425,7 +375,7 @@
       <property name="geometry">
        <rect>
         <x>699</x>
-        <y>37</y>
+        <y>38</y>
         <width>81</width>
         <height>23</height>
        </rect>
@@ -618,6 +568,81 @@
         <widget class="QLabel" name="label_32">
          <property name="text">
           <string>Hz</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="">
+      <property name="geometry">
+       <rect>
+        <x>580</x>
+        <y>37</y>
+        <width>105</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_5">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_21">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>21</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>21</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>0x</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="lineEdit_bfsk_data">
+         <property name="minimumSize">
+          <size>
+           <width>55</width>
+           <height>23</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>55</width>
+           <height>23</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>1234AB</string>
+         </property>
+         <property name="maxLength">
+          <number>6</number>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QLineEdit" name="lineEdit_bfsk_data_crc">
+         <property name="minimumSize">
+          <size>
+           <width>20</width>
+           <height>21</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>20</width>
+           <height>21</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>9C</string>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -842,56 +867,6 @@
        <string>0xA5 0x5A</string>
       </property>
      </widget>
-     <widget class="QWidget" name="layoutWidget_14">
-      <property name="geometry">
-       <rect>
-        <x>612</x>
-        <y>39</y>
-        <width>95</width>
-        <height>25</height>
-       </rect>
-      </property>
-      <layout class="QGridLayout" name="gridLayout_45">
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_43">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>21</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>21</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>0x</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QLineEdit" name="lineEdit_qfsk_data">
-         <property name="minimumSize">
-          <size>
-           <width>71</width>
-           <height>23</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>71</width>
-           <height>23</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>1234ABCD</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
      <widget class="QWidget" name="layoutWidget_15">
       <property name="geometry">
        <rect>
@@ -943,31 +918,103 @@
        <string>|--数据头--|-同步头频率-|-同步间隔-|-频率1-|-频率2-|-频率3-|-频率4-|-码元宽度-|-十六进制数据-|-数据尾-|</string>
       </property>
      </widget>
+     <widget class="QWidget" name="">
+      <property name="geometry">
+       <rect>
+        <x>601</x>
+        <y>39</y>
+        <width>105</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_4">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_43">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>21</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>21</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>0x</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="lineEdit_qfsk_data">
+         <property name="minimumSize">
+          <size>
+           <width>55</width>
+           <height>23</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>55</width>
+           <height>23</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>1234AB</string>
+         </property>
+         <property name="maxLength">
+          <number>6</number>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QLineEdit" name="lineEdit_qfsk_data_crc">
+         <property name="minimumSize">
+          <size>
+           <width>20</width>
+           <height>21</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>20</width>
+           <height>21</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>9C</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </widget>
-   <widget class="QWidget" name="layoutWidget">
+   <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
-      <x>360</x>
-      <y>120</y>
-      <width>801</width>
+      <x>363</x>
+      <y>127</y>
+      <width>800</width>
       <height>84</height>
      </rect>
     </property>
-    <layout class="QGridLayout" name="gridLayout_42">
+    <layout class="QGridLayout" name="gridLayout_7">
      <item row="0" column="0">
-      <layout class="QGridLayout" name="gridLayout_41">
+      <layout class="QGridLayout" name="gridLayout_6">
        <item row="0" column="0">
         <widget class="QPushButton" name="pushButton_send">
          <property name="minimumSize">
           <size>
-           <width>221</width>
+           <width>200</width>
            <height>51</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>221</width>
+           <width>200</width>
            <height>51</height>
           </size>
          </property>
@@ -1010,15 +1057,18 @@
       <widget class="QTextBrowser" name="textBrowser">
        <property name="minimumSize">
         <size>
-         <width>570</width>
+         <width>590</width>
          <height>81</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>570</width>
+         <width>590</width>
          <height>81</height>
         </size>
+       </property>
+       <property name="readOnly">
+        <bool>false</bool>
        </property>
       </widget>
      </item>
