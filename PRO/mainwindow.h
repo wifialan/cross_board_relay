@@ -69,6 +69,8 @@ private slots:
 
     void on_time_update(); //时间更新槽函数，状态栏显示时间
 
+    void on_pushButton_clicked();
+
 private:
     void RefreshTheUSBList( void );
     void protocol_bfsk();

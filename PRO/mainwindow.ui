@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1190</width>
-    <height>260</height>
+    <height>250</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -30,7 +30,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>10</y>
+      <y>12</y>
       <width>336</width>
       <height>199</height>
      </rect>
@@ -995,38 +995,83 @@
    <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
-      <x>363</x>
-      <y>127</y>
-      <width>800</width>
-      <height>84</height>
+      <x>362</x>
+      <y>121</y>
+      <width>798</width>
+      <height>87</height>
      </rect>
     </property>
-    <layout class="QGridLayout" name="gridLayout_7">
+    <layout class="QGridLayout" name="gridLayout_9">
      <item row="0" column="0">
-      <layout class="QGridLayout" name="gridLayout_6">
+      <layout class="QGridLayout" name="gridLayout_8">
        <item row="0" column="0">
-        <widget class="QPushButton" name="pushButton_send">
-         <property name="minimumSize">
-          <size>
-           <width>200</width>
-           <height>51</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>200</width>
-           <height>51</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>发送</string>
-         </property>
-        </widget>
+        <layout class="QGridLayout" name="gridLayout_7">
+         <item row="0" column="0">
+          <widget class="QPushButton" name="pushButton_send">
+           <property name="minimumSize">
+            <size>
+             <width>130</width>
+             <height>51</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>130</width>
+             <height>51</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>发送</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QPushButton" name="pushButton">
+           <property name="minimumSize">
+            <size>
+             <width>40</width>
+             <height>51</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>40</width>
+             <height>51</height>
+            </size>
+           </property>
+           <property name="layoutDirection">
+            <enum>Qt::RightToLeft</enum>
+           </property>
+           <property name="text">
+            <string>清屏</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item row="1" column="0">
-        <layout class="QGridLayout" name="gridLayout_10">
+        <layout class="QGridLayout" name="gridLayout_6">
+         <item row="0" column="0">
+          <widget class="QCheckBox" name="checkBox_repeat">
+           <property name="text">
+            <string>重复发送</string>
+           </property>
+          </widget>
+         </item>
          <item row="0" column="1">
           <widget class="QSpinBox" name="spinBox_repeat">
+           <property name="minimumSize">
+            <size>
+             <width>60</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>60</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="maximum">
             <number>999999</number>
            </property>
@@ -1042,13 +1087,6 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="0">
-          <widget class="QCheckBox" name="checkBox_repeat">
-           <property name="text">
-            <string>重复发送</string>
-           </property>
-          </widget>
-         </item>
         </layout>
        </item>
       </layout>
@@ -1057,14 +1095,14 @@
       <widget class="QTextBrowser" name="textBrowser">
        <property name="minimumSize">
         <size>
-         <width>590</width>
-         <height>81</height>
+         <width>610</width>
+         <height>85</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>590</width>
-         <height>81</height>
+         <width>610</width>
+         <height>85</height>
         </size>
        </property>
        <property name="readOnly">

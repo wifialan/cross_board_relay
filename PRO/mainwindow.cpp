@@ -16,6 +16,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->lineEdit_bfsk_data_crc->setEnabled(false);
     ui->lineEdit_qfsk_data_crc->setEnabled(false);
 
+    ui->textBrowser->setReadOnly(true);//禁止键盘输入但允许控件输入
+
     currentTimeLabel = new QLabel; // 创建QLabel控件
     ui->statusbar->addWidget(currentTimeLabel); //在状态栏添加此控件
     on_time_update();
@@ -291,17 +293,18 @@ void MainWindow::protocol_bfsk()
     ui->lineEdit_bfsk_data_crc->setText(QString::number(data[15],16).toUpper());
 
     qDebug() << bfsk_data;
-    QString  str = "BFSK: ";
+    QString  str = "BFSK:";
     QString  str_tmp;
 
     for (int i = 0;i < 18;i ++) {
-        str_tmp = QString::number((uint8_t)data[i],16).toUpper();
-        if(str_tmp == '0'){
-            str_tmp = "00";
-        }
+        //QString 格式化16进制 arg前面自动补0
+        str_tmp = QString("%1").arg((uint8_t)data[i],2,16, QLatin1Char('0')).toUpper();
         str.append(str_tmp);
         str.append(' ');
     }
+    QDateTime current_time = QDateTime::currentDateTime();
+    QString timestr = current_time.toString( "[yyyy-MM-dd hh:mm:ss]"); //设置显示的格式
+    ui->textBrowser->append(timestr);
     ui->textBrowser->append(str);
 
     //    for (int i=0;i<18;i++) {
@@ -379,17 +382,21 @@ void MainWindow::protocol_qfsk()
     //        qDebug("%d %d ",i,data[i]);
     //    }
 
-    QString  str = "QFSK: ";
+    QString  str = "QFSK:";
     QString  str_tmp;
 
     for (int i = 0;i < 22;i ++) {
-        str_tmp = QString::number((uint8_t)data[i],16).toUpper();
+        //QString 格式化16进制 arg前面自动补0
+        str_tmp = QString("%1").arg((uint8_t)data[i],2,16, QLatin1Char('0')).toUpper();
         if(str_tmp == '0'){
             str_tmp = "00";
         }
         str.append(str_tmp);
         str.append(' ');
     }
+    QDateTime current_time = QDateTime::currentDateTime();
+    QString timestr = current_time.toString( "[yyyy-MM-dd hh:mm:ss]"); //设置显示的格式
+    ui->textBrowser->append(timestr);
     ui->textBrowser->append(str);
 
     int symbol_number,tmp_data;
@@ -503,4 +510,9 @@ void MainWindow::on_checkBox_repeat_clicked(bool checked)
     }else{
         repeatSendTimer->stop();
     }
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    ui->textBrowser->clear();
 }
