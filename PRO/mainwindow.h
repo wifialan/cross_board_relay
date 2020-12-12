@@ -75,6 +75,7 @@ private:
     void RefreshTheUSBList( void );
     void protocol_bfsk();
     void protocol_qfsk();
+    void protocol_cw();
 
     char crc8_maxim(uint8_t *ptr,uint8_t len);
 

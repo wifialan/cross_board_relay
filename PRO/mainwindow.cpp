@@ -15,6 +15,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->lineEdit_data_tail_qfsk->setEnabled(false);
     ui->lineEdit_bfsk_data_crc->setEnabled(false);
     ui->lineEdit_qfsk_data_crc->setEnabled(false);
+    ui->lineEdit_data_header_cw->setEnabled(false);
+    ui->lineEdit_data_tail_cw->setEnabled(false);
 
     ui->textBrowser->setReadOnly(true);//禁止键盘输入但允许控件输入
 
@@ -22,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->statusbar->addWidget(currentTimeLabel); //在状态栏添加此控件
     on_time_update();
     QTimer *timer = new QTimer(this);
-    timer->start(500); //每隔300ms发送timeout的信号
+    timer->start(1000); //每隔1000ms发送timeout的信号
     connect(timer, SIGNAL(timeout()),this,SLOT(on_time_update()));
 
     //    ui->statusbar->setGeometry()
@@ -252,8 +254,10 @@ void MainWindow::on_pushButton_send_clicked()
 {
     if( ui->tabWidget->currentIndex() == 0){
         this->protocol_bfsk();
-    } else {
+    } else if( ui->tabWidget->currentIndex() == 1) {
         this->protocol_qfsk();
+    } else {
+        this->protocol_cw();
     }
 }
 
@@ -367,7 +371,7 @@ void MainWindow::protocol_qfsk()
     data[16] = (qfsk_data & 0xFF000000) >> 24;
     data[17] = (qfsk_data & 0x00FF0000) >> 16;
     data[18] = (qfsk_data & 0x0000FF00) >> 8;
-    data[19] = (qfsk_data & 0xFF000000) >> 0; //清零
+    data[19] = (qfsk_data & 0x00000000) >> 0; //清零
     data[20] = 0x5B;
     data[21] = 0xB5;
 
@@ -421,6 +425,61 @@ void MainWindow::protocol_qfsk()
     }
 
     serial->write(data,22);
+}
+
+void MainWindow::protocol_cw()
+{
+    /* MSB Frist
+     *    数据头     频率     持续时间    数据尾
+     * |--------|---------|---------|---------|
+     * 0xA5 0x5A 0x03 0x44 0x00 0x10 0x5B 0xB5
+     *
+     * */
+    char data[8]={0};
+    data[0] = 0xA5;
+    data[1] = 0x5A;
+    data[2] = (ui->lineEdit_cw_freq->text().toUInt() & 0xFF00) >> 8;
+    data[3] = (ui->lineEdit_cw_freq->text().toUInt() & 0x00FF) >> 0;
+    data[4] = (ui->lineEdit_cw_time->text().toUInt() & 0xFF00) >> 8;
+    data[5] = (ui->lineEdit_cw_time->text().toUInt() & 0x00FF) >> 0;
+    data[6] = 0x5B;
+    data[7] = 0xB5;
+
+    qDebug() << "CW";
+
+    //    for (int i=0;i<18;i++) {
+    //        qDebug("%d %d ",i,data[i]);
+    //    }
+
+    QString  str = "CW:";
+    QString  str_tmp;
+
+    for (int i = 0;i < 8;i ++) {
+        //QString 格式化16进制 arg前面自动补0
+        str_tmp = QString("%1").arg((uint8_t)data[i],2,16, QLatin1Char('0')).toUpper();
+        if(str_tmp == '0'){
+            str_tmp = "00";
+        }
+        str.append(str_tmp);
+        str.append(' ');
+    }
+    QDateTime current_time = QDateTime::currentDateTime();
+    QString timestr = current_time.toString( "[yyyy-MM-dd hh:mm:ss:zzz]"); //设置显示的格式
+    ui->textBrowser->append(timestr);
+    ui->textBrowser->append(str);
+
+    singal_wide = ui->lineEdit_cw_time->text().toUInt();
+    if(last_singal_wide != singal_wide){
+        last_singal_wide = singal_wide;
+        ui->spinBox_repeat->setMinimum(last_singal_wide + 10);
+        ui->spinBox_repeat->setValue(last_singal_wide + 10);
+    }
+
+    if(singal_wide > ui->spinBox_repeat->value()){
+        ui->spinBox_repeat->setValue(singal_wide + 10);
+    }
+
+    serial->write(data,8);
 }
 
 char MainWindow::crc8_maxim(uint8_t *ptr, uint8_t len)

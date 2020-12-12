@@ -459,7 +459,7 @@
           </size>
          </property>
          <property name="text">
-          <string>225</string>
+          <string>165</string>
          </property>
         </widget>
        </item>
@@ -522,7 +522,7 @@
           </size>
          </property>
          <property name="text">
-          <string>125</string>
+          <string>135</string>
          </property>
         </widget>
        </item>
@@ -560,7 +560,7 @@
           </size>
          </property>
          <property name="text">
-          <string>175</string>
+          <string>165</string>
          </property>
         </widget>
        </item>
@@ -573,7 +573,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
         <x>580</x>
@@ -918,7 +918,7 @@
        <string>|--数据头--|-同步头频率-|-同步间隔-|-频率1-|-频率2-|-频率3-|-频率4-|-码元宽度-|-十六进制数据-|-数据尾-|</string>
       </property>
      </widget>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
         <x>601</x>
@@ -991,8 +991,155 @@
       </layout>
      </widget>
     </widget>
+    <widget class="QWidget" name="tab">
+     <attribute name="title">
+      <string>CW</string>
+     </attribute>
+     <widget class="QLabel" name="label_48">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>10</y>
+        <width>801</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>|---数据头---|---频率---|---频率宽度---|---数据尾---|</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lineEdit_data_header_cw">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>37</y>
+        <width>81</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>81</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>81</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>0xA5 0x5A</string>
+      </property>
+     </widget>
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>37</y>
+        <width>65</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_10">
+       <item row="0" column="0">
+        <widget class="QLineEdit" name="lineEdit_cw_freq">
+         <property name="minimumSize">
+          <size>
+           <width>41</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>41</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>1000</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLabel" name="label_49">
+         <property name="text">
+          <string>Hz</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>410</x>
+        <y>37</y>
+        <width>65</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_11">
+       <item row="0" column="0">
+        <widget class="QLineEdit" name="lineEdit_cw_time">
+         <property name="minimumSize">
+          <size>
+           <width>41</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>41</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>2000</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLabel" name="label_44">
+         <property name="text">
+          <string>ms</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QLineEdit" name="lineEdit_data_tail_cw">
+      <property name="geometry">
+       <rect>
+        <x>510</x>
+        <y>37</y>
+        <width>81</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>81</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>81</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>0x5B 0xB5</string>
+      </property>
+     </widget>
+    </widget>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>362</x>
